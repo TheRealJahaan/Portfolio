@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
-  title: "Jahaan's World — Portfolio",
+  title: "Jahaan's World",
   description: "An interactive night skyline portfolio.",
 };
 
