@@ -4,7 +4,7 @@ export type BuildingId =
   | "ios"
   | "projects"
   | "github"
-  | "blog"
+  | "interests"
   | "contact"
   | "resume";
 
