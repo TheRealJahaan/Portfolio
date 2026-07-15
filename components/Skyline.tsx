@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, WheelEvent } from "react";
+import { useRef, useState, useEffect } from "react";
 import { buildingsConfig } from "@/lib/buildingsConfig";
 import Building from "./Building";
 import ScrollArrows from "./ScrollArrows";
