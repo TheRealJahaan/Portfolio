@@ -186,10 +186,13 @@ export default function Skyline({ onBuildingSelect, activeBuildingId, isZeroGrav
                 <Building
                   config={config}
                   isFocused={focusedId === config.id && !isZeroGravity}
-                  onClick={(e) => {
+                  onClick={() => {
                     if (!isZeroGravity) {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      onBuildingSelect(config.id, rect);
+                      const element = document.getElementById(`building-${config.id}`);
+                      if (element) {
+                        const rect = element.getBoundingClientRect();
+                        onBuildingSelect(config.id, rect);
+                      }
                     }
                   }}
                 />
