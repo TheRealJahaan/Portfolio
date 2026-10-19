@@ -324,7 +324,7 @@
         '<article class="id-card reveal" aria-labelledby="id-name">' +
           '<header class="id-head mono"><span>Passport · Passeport</span><span>Type P · IND</span></header>' +
           '<div class="id-body">' +
-            '<div class="id-photo">' + avatar + '<span class="id-photo-stamp mono">' + c.code + "</span></div>" +
+            '<div class="id-photo">' + avatar + "</div>" +
             '<div class="id-fields">' +
               '<p class="field"><span class="mono">Surname / Given name</span><b id="id-name" class="id-name">' + esc(P.name) + "</b></p>" +
               '<p class="field"><span class="mono">Occupation</span><b>' + esc(P.role) + "</b></p>" +
