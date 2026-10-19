@@ -12,6 +12,8 @@ An interactive single-page portfolio where visitors **fly from city to city**. E
 
 Board a flight → pick a city on the dotted world map → get a boarding pass → watch the plane taxi, take off, follow a self-drawing route and land, then the camera zooms into the city. A passport widget collects a stamp per city, and visiting all five unlocks **Journey Complete 🌍**.
 
+🎬 **[Watch the 93-second demo video](media/demo.mp4)** (a screen recording of the full journey).
+
 Plain HTML, CSS and JavaScript. **No build step, no dependencies to install.** GSAP, MotionPathPlugin and ScrollTrigger are vendored in `vendor/`, so it also works offline.
 
 ## Run it locally
@@ -73,6 +75,7 @@ js/cinema.js        Opening film, scroll animations, cloud wipe, scroll progress
 js/worldmap.js      Generated dotted world map path
 vendor/             GSAP 3.13 + MotionPathPlugin + ScrollTrigger (free standard license)
 assets/             resume.pdf, photos
+media/demo.mp4      Demo video of the full journey (not loaded by the site)
 404.html, robots.txt
 ```
 
