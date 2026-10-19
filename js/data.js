@@ -11,7 +11,7 @@ window.PORTFOLIO = {
   tagline: "I build fast, native iOS apps with Swift and SwiftUI.",
   location: "India",
   // Path to a photo (e.g. "assets/me.jpg"). Leave empty to show a monogram avatar.
-  photo: "",
+  photo: "assets/photo.jpg",
   resume: "assets/resume.pdf",
 
   bio: [
