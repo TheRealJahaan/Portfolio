@@ -661,3 +661,73 @@ kbd { font-family: var(--mono); border: 1px solid var(--line); border-bottom-wid
   .scene.fade-in { animation: fade .2s ease both !important; }
   .postcard-inner { transition: transform .01ms !important; }
 }
+
+/* ==============================================================
+ * 15. Cinematic layer (js/cinema.js)
+ * ============================================================== */
+
+/* ---------- Opening film ---------- */
+.film { position: fixed; inset: 0; z-index: 200; overflow: hidden; background: #050913; color: #f6efe0; }
+.i-sky { position: absolute; inset: 0; background: linear-gradient(180deg, #0b1530 0%, #23305c 38%, #b8534a 72%, #f0b26a 100%); }
+.i-sun { position: absolute; left: 50%; bottom: 14%; width: 34vmin; height: 34vmin; margin-left: -17vmin; border-radius: 50%; background: radial-gradient(circle, #ffd58a 0%, #f28a4e 55%, rgba(242,138,78,0) 72%); filter: blur(2px); }
+.i-clouds { position: absolute; inset: 0; perspective: 600px; }
+.i-cloud { position: absolute; left: var(--x); top: var(--y); width: 34vmin; height: 12vmin; margin: -6vmin 0 0 -17vmin; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(255,255,255,.95), rgba(255,255,255,0) 70%); opacity: 0; }
+.i-flight { position: absolute; inset: 0; width: 100%; height: 100%; }
+#i-route { stroke: none; }
+#i-trail { stroke: rgba(255,255,255,.7); stroke-width: 3; stroke-dasharray: 10 8; stroke-linecap: round; }
+#i-plane path { fill: #c4332b; stroke: #fff6e6; stroke-width: 1; }
+.i-text { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 0 20px; pointer-events: none; }
+.i-line { position: absolute; left: 0; right: 0; top: 50%; margin: -0.6em 0 0; font-size: clamp(13px, 1.8vw, 18px); text-transform: uppercase; letter-spacing: .3em; opacity: 0; }
+.i-title { margin: 0; font-size: clamp(64px, 14vw, 200px); line-height: .9; perspective: 600px; text-shadow: 0 6px 30px rgba(0,0,0,.35); }
+.i-title .word { display: inline-block; white-space: nowrap; }
+.i-title .ch { display: inline-block; transform-origin: 50% 100%; }
+.i-sub { margin: 14px 0 0; font-size: clamp(12px, 1.6vw, 16px); text-transform: uppercase; letter-spacing: .3em; color: #ffd58a; }
+.i-grain { position: absolute; inset: -50%; opacity: .14; pointer-events: none; animation: grain .6s steps(4) infinite;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+@keyframes grain { 0% { transform: translate(0, 0); } 25% { transform: translate(-5%, 3%); } 50% { transform: translate(4%, -4%); } 75% { transform: translate(-3%, -2%); } 100% { transform: translate(2%, 4%); } }
+.i-vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.6) 100%); }
+.i-bar { position: absolute; left: 0; right: 0; height: 11vh; background: #000; z-index: 2; }
+.i-bar.top { top: 0; }
+.i-bar.bottom { bottom: 0; display: flex; align-items: center; gap: 22px; padding: 0 24px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.i-rec { color: #ff6b5e; display: inline-flex; align-items: center; gap: 8px; }
+.i-rec i { width: 9px; height: 9px; border-radius: 50%; background: #ff3b2f; animation: blink 1s steps(2) infinite; }
+.i-tc { font-variant-numeric: tabular-nums; }
+.i-scene { margin-left: auto; }
+.i-skip { position: absolute; right: 22px; top: calc(11vh + 18px); z-index: 3; padding: 9px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.4); background: rgba(0,0,0,.35); color: #fff; cursor: pointer; font-size: 13px; }
+.i-skip:hover { background: rgba(0,0,0,.6); }
+
+/* ---------- Cloud wipe between scenes ---------- */
+.cloud-wipe { position: fixed; inset: -10vh -20vw; z-index: 150; pointer-events: none; background: #f7f3ea; filter: blur(18px); border-radius: 40%; }
+:root[data-theme="dark"] .cloud-wipe { background: #b9c4dc; }
+.cloud-wipe span { position: absolute; width: 50vw; height: 50vh; border-radius: 50%; background: inherit; }
+.cloud-wipe span:nth-child(1) { left: -20vw; top: 10vh; } .cloud-wipe span:nth-child(2) { right: -20vw; top: 40vh; }
+.cloud-wipe span:nth-child(3) { left: 10vw; top: -20vh; } .cloud-wipe span:nth-child(4) { left: 30vw; bottom: -25vh; }
+
+/* ---------- Scroll progress plane ---------- */
+.flight-progress { position: fixed; left: 0; right: 0; top: 63px; height: 14px; z-index: 29; pointer-events: none; }
+.fp-line { position: absolute; left: 0; right: 0; top: 6px; border-top: 2px dashed var(--teal); transform: scaleX(0); transform-origin: 0 50%; }
+.fp-plane { position: absolute; left: 0; top: -1px; width: 18px; height: 16px; margin-left: -9px; fill: var(--red); }
+@media (max-width: 760px) { .flight-progress { top: 59px; } }
+
+/* ---------- Ambient sky in every poster ---------- */
+.skyline { overflow: visible; }
+.amb-plane { animation: amb-fly 18s linear infinite; }
+.amb-plane path { fill: var(--ink); }
+.amb-plane .amb-trail { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 5; opacity: .45; }
+@keyframes amb-fly { 0% { transform: translate(-60px, 50px) scale(.7); } 60%, 100% { transform: translate(680px, 8px) scale(.7); } }
+.amb-cloud ellipse { fill: var(--paper); opacity: .9; }
+:root[data-theme="dark"] .amb-cloud ellipse { fill: #2a3b63; }
+.amb-cloud.c1 { animation: amb-drift 40s linear infinite; }
+.amb-cloud.c2 { animation: amb-drift 55s linear infinite -20s; }
+@keyframes amb-drift { from { transform: translate(-80px, 30px); } to { transform: translate(680px, 30px); } }
+.amb-cloud.c2 { transform: translate(200px, 64px); }
+
+/* ---------- Education flight log trail ---------- */
+.log-trail { position: absolute; left: 163px; top: 10px; bottom: 10px; width: 5px; margin-left: -1px; background: var(--teal); border-radius: 3px; transform: scaleY(0); transform-origin: 50% 0; }
+.log-plane { position: absolute; left: 165px; top: 0; width: 30px; height: 30px; margin: -15px 0 0 -14px; z-index: 2; }
+.log-plane svg { width: 100%; height: 100%; fill: var(--red); transform: rotate(90deg); filter: drop-shadow(0 2px 4px rgba(0,0,0,.3)); }
+@media (max-width: 760px) { .log-trail { left: 22px; } .log-plane { left: 24px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .amb-plane, .amb-cloud, .flight-progress, .log-trail, .log-plane { display: none; }
+}

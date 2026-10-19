@@ -249,7 +249,11 @@
 
   function poster(key) {
     return '<svg class="skyline" viewBox="0 0 600 150" preserveAspectRatio="xMidYMax meet" aria-hidden="true">' +
-      '<circle class="sun" cx="' + (key === "skills" ? 120 : 470) + '" cy="58" r="44"/>' + SKYLINES[key] +
+      '<circle class="sun" cx="' + (key === "skills" ? 120 : 470) + '" cy="58" r="44"/>' +
+      '<g class="amb-cloud c1"><ellipse cx="0" cy="0" rx="46" ry="11"/><ellipse cx="18" cy="-8" rx="24" ry="10"/></g>' +
+      '<g class="amb-cloud c2"><ellipse cx="0" cy="0" rx="34" ry="8"/><ellipse cx="-10" cy="-6" rx="18" ry="8"/></g>' +
+      '<g class="amb-plane"><path class="amb-trail" d="M-90 0H-16"/><path d="' + PLANE_PATH + '"/></g>' +
+      SKYLINES[key] +
       '<rect class="ground" x="0" y="148" width="600" height="2"/></svg>';
   }
 
@@ -895,6 +899,7 @@
   // Arrival banner first, then the content slides in
   function playArrival(scene, key) {
     if (!motionOK()) {
+      Cinema.enterScene(scene, key);
       scene.classList.remove("fade-in"); void scene.offsetWidth; scene.classList.add("fade-in");
       return;
     }
@@ -905,12 +910,10 @@
         .from(".arrival .arrival-meta, .arrival .section-tag, .arrival .intro", { y: 16, opacity: 0, stagger: 0.08, duration: 0.4 }, "-=0.3")
         .from(".arrival .skyline", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.6");
     }
-    var reveals = $$(".reveal", scene);
-    tl.from(reveals, { y: 40, opacity: 0, duration: 0.6, stagger: 0.08, ease: "power3.out", clearProps: "transform,opacity" }, key === "home" ? 0 : "-=0.3");
-    if (key === "skills") {
-      tl.from(".skill-stamp", { scale: 1.8, opacity: 0, duration: 0.35, stagger: 0.035, ease: "back.out(2.5)", clearProps: "transform,opacity",
-        onStart: function () { Sound.stamp(); } }, "-=0.4");
-    }
+    // Cinema animates everything below the fold on scroll; only what's on screen now plays here
+    var handled = Cinema.enterScene(scene, key);
+    var reveals = $$(".reveal", scene).filter(function (el) { return handled.indexOf(el) < 0; });
+    if (reveals.length) tl.from(reveals, { y: 40, opacity: 0, duration: 0.6, stagger: 0.08, ease: "power3.out", clearProps: "transform,opacity" }, key === "home" ? 0 : "-=0.3");
   }
 
   // Back / forward buttons and manual hash edits: jump without the full flight
@@ -918,7 +921,8 @@
     if (!key || key === state.current || state.flying) return;
     ["#map-overlay", "#pass-overlay"].forEach(function (s) { $(s).hidden = true; });
     document.body.classList.remove("no-scroll");
-    arrive(key, state.current, { fromHistory: fromHistory });
+    var from = state.current;
+    Cinema.cloudWipe(function () { arrive(key, from, { fromHistory: fromHistory }); });
   }
 
   /* ============================================================
@@ -1073,9 +1077,22 @@
       arrive(start, "home", { fromHistory: true, initial: true });
       toast("Landed in " + CITIES[start].city + " via direct flight.");
     } else {
-      arrive("home", null, { fromHistory: true, initial: true });
       if (!location.hash) history.replaceState(null, "", "#about");
+      var seen = false;
+      try { seen = sessionStorage.getItem("tj-intro") === "1"; } catch (e) {}
+      if (seen) arrive("home", null, { fromHistory: true, initial: true });
+      else {
+        try { sessionStorage.setItem("tj-intro", "1"); } catch (e) {}
+        // The opening film plays first; the airport animates in as it ends
+        Cinema.intro(P.name, P.role, function () { arrive("home", null, { fromHistory: true, initial: true }); });
+      }
     }
+    Cinema.progressBar();
+    $("#btn-intro").hidden = !Cinema.enabled;
+    $("#btn-intro").addEventListener("click", function () {
+      if (state.flying) return;
+      Cinema.intro(P.name, P.role, function () { playArrival(state.current === "home" ? $("#scene-home") : $("#scene-city"), state.current); });
+    });
   }
 
   boot();

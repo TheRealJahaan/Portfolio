@@ -12,7 +12,7 @@ An interactive single-page portfolio where visitors **fly from city to city**. E
 
 Board a flight → pick a city on the dotted world map → get a boarding pass → watch the plane taxi, take off, follow a self-drawing route and land, then the camera zooms into the city. A passport widget collects a stamp per city, and visiting all five unlocks **Journey Complete 🌍**.
 
-Plain HTML, CSS and JavaScript. **No build step, no dependencies to install.** GSAP + MotionPathPlugin are vendored in `vendor/`, so it also works offline.
+Plain HTML, CSS and JavaScript. **No build step, no dependencies to install.** GSAP, MotionPathPlugin and ScrollTrigger are vendored in `vendor/`, so it also works offline.
 
 ## Run it locally
 
@@ -47,6 +47,9 @@ Replace `assets/resume.pdf` to update the résumé.
 
 ## Features
 
+- **Opening film**: a 6-second movie-style intro (letterbox bars, timecode, film grain, fly-through clouds, a plane leaving a contrail, title card) that irises open into the airport. Plays once per visit, skippable, replay with the 🎬 button
+- **Scroll-driven animation in every city** (GSAP ScrollTrigger): parallax skylines, postcards dealt onto the table, stamps slamming down page by page, luggage tags swinging in, and a flight-log trail that draws itself while a plane flies down it
+- A plane flies across the top of the screen as you scroll, ambient planes and clouds drift through every skyline, and back / forward jumps fly you through a cloud wipe
 - Split-flap departure board and exchange board animations
 - Custom SVG world map (dot matrix generated from Natural Earth data), pulsing pins, hover tooltips, VISITED stamps
 - Boarding pass with editable passenger name, seat, gate, boarding time and barcode
@@ -66,8 +69,9 @@ css/style.css       All styles: tokens, themes, components, responsive rules
 js/data.js          ← your content
 js/app.js           State, rendering, map geometry, flight sequence, routing
 js/sound.js         Web Audio sound effects (no audio files)
+js/cinema.js        Opening film, scroll animations, cloud wipe, scroll progress plane
 js/worldmap.js      Generated dotted world map path
-vendor/             GSAP 3.13 + MotionPathPlugin (free standard license)
+vendor/             GSAP 3.13 + MotionPathPlugin + ScrollTrigger (free standard license)
 assets/             resume.pdf, photos
 404.html, robots.txt
 ```
