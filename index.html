@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jahaan Suthar · iOS Developer</title>
+<meta name="description" content="Jahaan Suthar is an iOS developer building fast, native apps with Swift and SwiftUI. Take a flight through his projects, skills, languages and education.">
+<meta name="theme-color" content="#0f1b33">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jahaan Suthar · Board your flight">
+<meta property="og:description" content="An interactive travel-journey portfolio. Fly from city to city to explore projects, skills, languages and education.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1b33'/%3E%3Cpath d='M50 30H36L24 12h-5l6 18H14l-4-6H6l3 8-3 8h4l4-6h11l-6 18h5l12-18h14a4 4 0 0 0 0-8z' fill='%23f3e9d2'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Jahaan Suthar","jobTitle":"iOS Developer","email":"mailto:jahaansuthar@gmail.com","alumniOf":"Vellore Institute of Technology","sameAs":["https://github.com/TheRealJahaan","https://www.linkedin.com/in/jahaan-suthar-648320320"]}
+</script>
+<!-- Set the theme before first paint so there is no flash -->
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("tj-theme"); } catch (e) {}
+    if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Night sky (dark mode) and paper grain (light mode) -->
+<div class="sky" aria-hidden="true"><div class="stars" id="stars"></div></div>
+
+<!-- ============ Top bar ============ -->
+<header class="topbar">
+  <a class="brand" href="#about" data-action="home" aria-label="Jahaan Air, return home">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><path d="M50 30H36L24 12h-5l6 18H14l-4-6H6l3 8-3 8h4l4-6h11l-6 18h5l12-18h14a4 4 0 0 0 0-8z"/></svg>
+    <span class="brand-text">Jahaan<b>Air</b></span>
+  </a>
+  <div class="topbar-status mono" id="topbar-status" aria-live="polite"></div>
+  <nav class="topbar-actions" aria-label="Site controls">
+    <button class="icon-btn" id="btn-home" data-action="home" title="Return home (H)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg><span class="label">Home</span>
+    </button>
+    <button class="icon-btn" id="btn-board-top" data-action="board" title="Open the route map (B)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg><span class="label">Fly</span>
+    </button>
+    <button class="icon-btn" id="btn-sound" aria-pressed="false" title="Sound effects (off)">
+      <svg class="ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+      <svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM17 9l5 6M22 9l-5 6"/></svg>
+      <span class="sr-only">Sound effects</span>
+    </button>
+    <button class="icon-btn" id="btn-theme" title="Switch day / night flight">
+      <svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      <span class="sr-only">Toggle night flight</span>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+  <!-- ============ HOME CITY: About Me (rendered by app.js) ============ -->
+  <section id="scene-home" class="scene" aria-labelledby="home-title"></section>
+
+  <!-- ============ DESTINATION CITY (rendered by app.js on arrival) ============ -->
+  <section id="scene-city" class="scene" hidden></section>
+</main>
+
+<!-- ============ Route map / flight overlay ============ -->
+<div class="overlay map-overlay" id="map-overlay" role="dialog" aria-modal="true" aria-labelledby="map-title" hidden>
+  <div class="map-head">
+    <div>
+      <p class="eyebrow mono" id="map-origin">Departing from</p>
+      <h2 class="display" id="map-title">Choose your destination</h2>
+    </div>
+    <button class="ghost-btn" id="map-close" data-action="close-map">Stay here <span aria-hidden="true">✕</span></button>
+  </div>
+
+  <!-- Desktop / tablet: the world map -->
+  <div class="map-frame" id="map-frame">
+    <div class="map-stage" id="map-stage">
+      <svg class="world" id="world" viewBox="0 40 1000 380" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <mask id="route-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="500">
+            <path id="route-mask-path" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+          </mask>
+        </defs>
+        <g class="graticule" id="graticule"></g>
+        <path class="land" id="land"/>
+        <path class="route-ghost" id="route-ghost" fill="none"/>
+        <path class="route" id="route" fill="none" mask="url(#route-mask)"/>
+        <g class="plane" id="plane" opacity="0">
+          <!-- Plane drawn pointing right so MotionPath autoRotate works -->
+          <path d="M14 0C14-1.2 12-2 10-2H3L-4-12h-3l4 10h-6l-3-4h-2l1.5 6-1.5 6h2l3-4h6l-4 10h3l7-10h7c2 0 4-.8 4-2z"/>
+        </g>
+      </svg>
+      <div class="pins" id="pins"></div>
+    </div>
+  </div>
+
+  <!-- Mobile: a vertical departures list instead of the map -->
+  <ol class="dest-list" id="dest-list" aria-label="Destinations"></ol>
+
+  <!-- Mobile flight: simple arc between two airport codes -->
+  <div class="mini-flight" id="mini-flight" hidden>
+    <svg viewBox="0 0 320 140" aria-hidden="true">
+      <mask id="mini-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="320" height="140"><path id="mini-mask-path" d="M40 110Q160 -10 280 110" fill="none" stroke="#fff" stroke-width="8"/></mask>
+      <path class="route-ghost" d="M40 110Q160 -10 280 110" fill="none"/>
+      <path class="route" id="mini-route" d="M40 110Q160 -10 280 110" fill="none" mask="url(#mini-mask)"/>
+      <circle class="mini-dot" cx="40" cy="110" r="5"/><circle class="mini-dot" cx="280" cy="110" r="5"/>
+      <text class="mini-code" id="mini-from" x="40" y="134" text-anchor="middle">MAA</text>
+      <text class="mini-code" id="mini-to" x="280" y="134" text-anchor="middle">SFO</text>
+      <g class="plane" id="mini-plane"><path d="M14 0C14-1.2 12-2 10-2H3L-4-12h-3l4 10h-6l-3-4h-2l1.5 6-1.5 6h2l3-4h6l-4 10h3l7-10h7c2 0 4-.8 4-2z"/></g>
+    </svg>
+  </div>
+
+  <!-- In-flight clouds (parallax) -->
+  <div class="clouds" id="clouds" aria-hidden="true">
+    <span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span><span class="cloud c4"></span><span class="cloud c5"></span>
+  </div>
+
+  <!-- In-flight HUD -->
+  <div class="hud mono" id="hud" hidden>
+    <div class="hud-cell"><span>Flight</span><b id="hud-flight">PRJ-101</b></div>
+    <div class="hud-cell"><span>Altitude</span><b><i id="hud-alt">0</i> ft</b></div>
+    <div class="hud-cell"><span>Ground speed</span><b><i id="hud-speed">0</i> kt</b></div>
+    <div class="hud-cell"><span>ETA</span><b id="hud-eta">00:04</b></div>
+    <p class="hud-msg" id="hud-msg" aria-live="polite">Taxiing to runway</p>
+    <button class="skip-btn" id="btn-skip" data-action="skip">Skip <span aria-hidden="true">✈</span></button>
+  </div>
+
+  <p class="map-hint mono" id="map-hint">Tip: you can fly anywhere, in any order. Press <kbd>Esc</kbd> to stay put.</p>
+</div>
+
+<!-- ============ Boarding pass ============ -->
+<div class="overlay pass-overlay" id="pass-overlay" role="dialog" aria-modal="true" aria-labelledby="pass-title" hidden>
+  <article class="pass" id="pass"></article>
+</div>
+
+<!-- ============ Journey complete ============ -->
+<div class="overlay complete-overlay" id="complete-overlay" role="dialog" aria-modal="true" aria-labelledby="complete-title" hidden>
+  <div class="complete-card" id="complete-card"></div>
+</div>
+
+<!-- ============ Passport widget ============ -->
+<div class="passport" id="passport">
+  <button class="passport-btn" id="passport-btn" aria-expanded="false" aria-controls="passport-panel">
+    <svg viewBox="0 0 24 32" aria-hidden="true"><rect x="1" y="1" width="22" height="30" rx="3"/><circle cx="12" cy="13" r="5"/><path d="M7 13h10M12 8c-2 2.6-2 7.4 0 10M12 8c2 2.6 2 7.4 0 10M7 24h10"/></svg>
+    <span class="passport-count mono"><b id="passport-count">0</b>/<span id="passport-total">5</span></span>
+    <span class="sr-only">cities visited, open passport</span>
+  </button>
+  <div class="passport-panel" id="passport-panel" hidden>
+    <header>
+      <p class="eyebrow mono">Passport · Republic of Curiosity</p>
+      <h3 class="display">Visa stamps</h3>
+    </header>
+    <div class="stamp-grid" id="stamp-grid"></div>
+    <footer>
+      <p class="mono small" id="passport-note"></p>
+      <button class="text-btn" data-action="reset">Reset journey</button>
+    </footer>
+  </div>
+</div>
+
+<div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+<noscript>
+  <div class="noscript">
+    <h1>Jahaan Suthar</h1>
+    <p>iOS Developer · B.Tech CSE at VIT Chennai.</p>
+    <p>Email <a href="mailto:jahaansuthar@gmail.com">jahaansuthar@gmail.com</a> · <a href="https://github.com/TheRealJahaan">GitHub</a> · <a href="https://www.linkedin.com/in/jahaan-suthar-648320320">LinkedIn</a> · <a href="assets/resume.pdf">Resume</a></p>
+  </div>
+</noscript>
+
+<!-- GSAP is vendored locally so the site works offline and on any static host -->
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/MotionPathPlugin.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/worldmap.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
